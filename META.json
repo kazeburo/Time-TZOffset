@@ -53,5 +53,15 @@
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/kazeburo/Time-TZOffset/issues"
+      },
+      "homepage" : "https://github.com/kazeburo/Time-TZOffset",
+      "repository" : {
+         "url" : "https://github.com/kazeburo/Time-TZOffset.git",
+         "web" : "https://github.com/kazeburo/Time-TZOffset"
+      }
+   },
    "version" : "0.01"
 }

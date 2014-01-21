@@ -5,6 +5,8 @@ extern "C" {
 #define PERL_NO_GET_CONTEXT /* we want efficiency */
 #include <EXTERN.h>
 #include <perl.h>
+#include "tzo_config.h"
+#include "time_r.h"
 #include <time.h>
 #include <XSUB.h>
 
@@ -16,16 +18,20 @@ extern "C" {
 #include "ppport.h"
 
 /*    Based on POSIX::strftime::GNU::XS
- *
  *    Copyright (c) 2012-2014 Piotr Roszatycki <dexter@cpan.org>
  */
 
-#ifdef HAS_TM_TM_GMTOFF
-#define HAVE_TM_GMTOFF 1
-#endif
+#define TM_YEAR_BASE 1900
 
-#ifdef HAS_TM_TM_ZONE
-#define HAVE_TM_ZONE 1
+#if !HAVE_TM_GMTOFF
+/* Portable standalone applications should supply a "time.h" that
+   declares a POSIX-compliant localtime_r, for the benefit of older
+   implementations that lack localtime_r or have a nonstandard one.
+   See the gnulib time_r module for one way to implement this.  */
+# undef __gmtime_r
+# undef __localtime_r
+# define __gmtime_r gmtime_r
+# define __localtime_r localtime_r
 #endif
 
 /* Shift A right by B bits portably, by dividing A by 2**B and
@@ -42,19 +48,6 @@ extern "C" {
   (-1 >> 1 == -1        \
    ? (a) >> (b)         \
    : (a) / (1 << (b)) - ((a) % (1 << (b)) < 0))
-
-#define TM_YEAR_BASE 1900
-
-#if !HAVE_TM_GMTOFF
-/* Portable standalone applications should supply a "time.h" that
-   declares a POSIX-compliant localtime_r, for the benefit of older
-   implementations that lack localtime_r or have a nonstandard one.
-   See the gnulib time_r module for one way to implement this.  */
-# undef __gmtime_r
-# undef __localtime_r
-# define __gmtime_r gmtime_r
-# define __localtime_r localtime_r
-#endif
 
 
 #if ! HAVE_TM_GMTOFF
@@ -119,6 +112,7 @@ tzoffset (
     int             isdst
 ) {
     struct tm mytm;
+    dTHX;
 
     init_tm(&mytm);
     mytm.tm_sec = sec;
@@ -146,7 +140,7 @@ tzoffset (
 #if HAVE_TM_GMTOFF
     return mytm.tm_gmtoff;
 #else
-    return gmtoff(tp);
+    return gmtoff(&mytm);
 #endif
 }
 
