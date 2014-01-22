@@ -61,7 +61,7 @@ Copyright (C) Masahiro Nagano.
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
-# POSIX::strftime::GNU
+# POSIX::strftime::GNU LICENSE
 
 This modules uses [POSIX::strftime::GNU](http://search.cpan.org/perldoc?POSIX::strftime::GNU)'s code. [POSIX::strftime::GNU](http://search.cpan.org/perldoc?POSIX::strftime::GNU)'s  license term is following:
 

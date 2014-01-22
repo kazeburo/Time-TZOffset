@@ -82,7 +82,7 @@ Copyright (C) Masahiro Nagano.
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
-=head1 POSIX::strftime::GNU
+=head1 POSIX::strftime::GNU LICENSE
 
 This modules uses L<POSIX::strftime::GNU>'s code. L<POSIX::strftime::GNU>'s  license term is following:
 
