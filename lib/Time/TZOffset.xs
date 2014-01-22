@@ -14,7 +14,6 @@ extern "C" {
 } /* extern "C" */
 #endif
 
-#define NEED_newSVpvn_flags
 #include "ppport.h"
 
 /*    Based on POSIX::strftime::GNU::XS
@@ -51,8 +50,6 @@ extern "C" {
 
 
 #if ! HAVE_TM_GMTOFF
-/* Calculate TZ offset.
-   Return -1 for errors.  */
 static int
 gmtoff (const struct tm *tp)
 {
@@ -65,14 +62,10 @@ gmtoff (const struct tm *tp)
 
   if (lt == (time_t) -1)
     {
-      /* mktime returns -1 for errors, but -1 is also a
-         valid time_t value.  Check whether an error really
-         occurred.  */
       struct tm tm;
 
       if (! __localtime_r (&lt, &tm)
-          || ((ltm.tm_sec ^ tm.tm_sec)
-              | (ltm.tm_min ^ tm.tm_min)
+          || ((ltm.tm_min ^ tm.tm_min)
               | (ltm.tm_hour ^ tm.tm_hour)
               | (ltm.tm_mday ^ tm.tm_mday)
               | (ltm.tm_mon ^ tm.tm_mon)
@@ -94,14 +87,12 @@ gmtoff (const struct tm *tp)
   int days = (365 * years + intervening_leap_days
               + (ltm.tm_yday - gtm.tm_yday));
   return (60 * (60 * (24 * days + (ltm.tm_hour - gtm.tm_hour))
-                + (ltm.tm_min - gtm.tm_min))
-          + (ltm.tm_sec - gtm.tm_sec));
+                + (ltm.tm_min - gtm.tm_min)));
 }
 #endif
 
 int
 tzoffset (
-    int          sec,
     int             min,
     int             hour,
     int             mday,
@@ -114,28 +105,15 @@ tzoffset (
     struct tm mytm;
     dTHX;
 
-    init_tm(&mytm);
-    mytm.tm_sec = sec;
+    memset(&mytm,0,sizeof(mytm));
+    mytm.tm_sec = 0;
     mytm.tm_min = min;
     mytm.tm_hour = hour;
     mytm.tm_mday = mday;
     mytm.tm_mon = mon;
     mytm.tm_year = year;
-    mytm.tm_wday = wday;
-    mytm.tm_yday = yday;
-    mytm.tm_isdst = isdst;
-    mini_mktime(&mytm);
-
-#if defined(HAS_MKTIME) && (defined(HAS_TM_TM_GMTOFF) || defined(HAS_TM_TM_ZONE))
-    STMT_START {
-      struct tm mytm2;
-      mytm2 = mytm;
-      mktime(&mytm2);
-#ifdef HAS_TM_TM_GMTOFF
-      mytm.tm_gmtoff = mytm2.tm_gmtoff;
-#endif
-  } STMT_END;
-#endif
+    mytm.tm_isdst = -1;
+    mktime(&mytm);
 
 #if HAVE_TM_GMTOFF
     return mytm.tm_gmtoff;
@@ -159,14 +137,11 @@ xs_tzoffset(sec, min, hour, mday, mon, year, wday = -1, yday = -1, isdst = -1)
     int             wday
     int             yday
     int             isdst
+INIT:
+    int offset;
 CODE:
 {
-    int nsec;
-    char nsec_str[12];
-
-    sprintf(nsec_str, "%.9f", fabs(sec - (int)sec));
-    nsec = atoi(nsec_str+2);
-    int offset = tzoffset(nsec, min, hour, mday, mon, year, wday, yday, isdst);
+    offset = tzoffset(min, hour, mday, mon, year, wday, yday, isdst);
     RETVAL=newSVpv("",0);
     sv_setpvf(RETVAL,"%+03d%02u", offset/60/60, offset/60%60);
 }

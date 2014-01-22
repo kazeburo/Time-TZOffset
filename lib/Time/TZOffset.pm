@@ -1,9 +1,12 @@
 package Time::TZOffset;
-use 5.008005;
+use 5.008004;
 use strict;
 use warnings;
+use base qw/Exporter/;
+
 
 our $VERSION = "0.01";
+our @EXPORT_OK = qw/tzoffset/;
 
 use XSLoader;
 XSLoader::load(__PACKAGE__, $VERSION);
