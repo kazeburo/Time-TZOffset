@@ -1,7 +1,7 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "Show timezone offset strings like +0900",
    "author" : [
-      "Masahiro Nagano <kazeburo@gmail.com>"
+      "-2014 Piotr Roszatycki <dexter@cpan.org>."
    ],
    "dynamic_config" : 0,
    "generated_by" : "Minilla/v0.11.0, CPAN::Meta::Converter version 2.132830",
@@ -64,5 +64,8 @@
          "web" : "https://github.com/kazeburo/Time-TZOffset"
       }
    },
-   "version" : "0.01"
+   "version" : "0.01",
+   "x_contributors" : [
+      "Masahiro Nagano <kazeburo@gmail.com>"
+   ]
 }

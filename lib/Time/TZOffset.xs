@@ -97,10 +97,7 @@ tzoffset (
     int             hour,
     int             mday,
     int             mon,
-    int             year,
-    int             wday,
-    int             yday,
-    int             isdst
+    int             year
 ) {
     struct tm mytm;
     dTHX;
@@ -141,7 +138,7 @@ INIT:
     int offset;
 CODE:
 {
-    offset = tzoffset(min, hour, mday, mon, year, wday, yday, isdst);
+    offset = tzoffset(min, hour, mday, mon, year);
     RETVAL=newSVpv("",0);
     sv_setpvf(RETVAL,"%+03d%02u", offset/60/60, offset/60%60);
 }
