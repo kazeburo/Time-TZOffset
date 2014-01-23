@@ -6,7 +6,6 @@ extern "C" {
 #include <EXTERN.h>
 #include <perl.h>
 #include "tzo_config.h"
-#include "time_r.h"
 #include <time.h>
 #include <XSUB.h>
 
@@ -23,14 +22,22 @@ extern "C" {
 #define TM_YEAR_BASE 1900
 
 #if !HAVE_TM_GMTOFF
-/* Portable standalone applications should supply a "time.h" that
-   declares a POSIX-compliant localtime_r, for the benefit of older
-   implementations that lack localtime_r or have a nonstandard one.
-   See the gnulib time_r module for one way to implement this.  */
-# undef __gmtime_r
-# undef __localtime_r
-# define __gmtime_r gmtime_r
-# define __localtime_r localtime_r
+#ifndef HAVE_GMTIME_R
+struct tm *
+gmtime_r (const time_t const *t, const struct tm *tp)
+{
+  memcpy (tp, gmtime(t), sizeof (tp));
+  return tp;
+}
+#endif
+#ifdef HAVE_LOCALTIME_R
+struct tm *
+localtime_r (const time_t const *t, const struct tm *tp)
+{
+  memcpy (tp,localtime(t), sizeof (tp));
+  return tp;
+}
+#endif
 #endif
 
 /* Shift A right by B bits portably, by dividing A by 2**B and
@@ -64,7 +71,7 @@ gmtoff (const struct tm *tp)
     {
       struct tm tm;
 
-      if (! __localtime_r (&lt, &tm)
+      if (! localtime_r (&lt, &tm)
           || ((ltm.tm_min ^ tm.tm_min)
               | (ltm.tm_hour ^ tm.tm_hour)
               | (ltm.tm_mday ^ tm.tm_mday)
@@ -73,7 +80,7 @@ gmtoff (const struct tm *tp)
         return -1;
     }
 
-  if (! __gmtime_r (&lt, &gtm))
+  if (! gmtime_r (&lt, &gtm))
     return -1;
 
   int a4 = SHR (ltm.tm_year, 2) + SHR (TM_YEAR_BASE, 2) - ! (ltm.tm_year & 3);
