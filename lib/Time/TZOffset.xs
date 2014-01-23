@@ -139,7 +139,7 @@ INIT:
 CODE:
 {
     offset = tzoffset(min, hour, mday, mon, year);
-    RETVAL=newSVpv("",0);
+    RETVAL=newSVpvs("");
     sv_setpvf(RETVAL,"%+03d%02u", offset/60/60, offset/60%60);
 }
 OUTPUT:
