@@ -21,25 +21,6 @@ extern "C" {
 
 #define TM_YEAR_BASE 1900
 
-#if !HAVE_TM_GMTOFF
-#ifndef HAVE_GMTIME_R
-struct tm *
-gmtime_r (const time_t const *t, const struct tm *tp)
-{
-  memcpy (tp, gmtime(t), sizeof (tp));
-  return tp;
-}
-#endif
-#ifdef HAVE_LOCALTIME_R
-struct tm *
-localtime_r (const time_t const *t, const struct tm *tp)
-{
-  memcpy (tp,localtime(t), sizeof (tp));
-  return tp;
-}
-#endif
-#endif
-
 /* Shift A right by B bits portably, by dividing A by 2**B and
    truncating towards minus infinity.  A and B should be free of side
    effects, and B should be in the range 0 <= B <= INT_BITS - 2, where
@@ -57,6 +38,29 @@ localtime_r (const time_t const *t, const struct tm *tp)
 
 
 #if ! HAVE_TM_GMTOFF
+#ifndef HAVE_GMTIME_R
+struct tm *gmtime_r (const time_t *, struct tm *);
+struct tm *
+gmtime_r (const time_t *t, struct tm *tp)
+{
+  struct tm *ltp;
+  ltp = gmtime(t);
+  *(tp) = *ltp;
+  return ltp;
+}
+#endif
+#ifndef HAVE_LOCALTIME_R
+struct tm *localtime_r (const time_t *, struct tm *);
+struct tm *
+localtime_r (const time_t *t, struct tm *tp)
+{
+  struct tm *ltp;
+  ltp = localtime(t);
+  *(tp) = *ltp;
+  return ltp;
+}
+#endif
+
 static int
 gmtoff (const struct tm *tp)
 {
