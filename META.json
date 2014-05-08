@@ -65,7 +65,7 @@
          "web" : "https://github.com/kazeburo/Time-TZOffset"
       }
    },
-   "version" : "0.02",
+   "version" : "0.03",
    "x_contributors" : [
       "Jacques Germishuys <jacquesg@striata.com>",
       "Masahiro Nagano <kazeburo@gmail.com>"
