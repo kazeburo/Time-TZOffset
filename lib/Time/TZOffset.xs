@@ -87,18 +87,20 @@ gmtoff (const struct tm *tp)
   if (! gmtime_r (&lt, &gtm))
     return -1;
 
-  int a4 = SHR (ltm.tm_year, 2) + SHR (TM_YEAR_BASE, 2) - ! (ltm.tm_year & 3);
-  int b4 = SHR (gtm.tm_year, 2) + SHR (TM_YEAR_BASE, 2) - ! (gtm.tm_year & 3);
-  int a100 = a4 / 25 - (a4 % 25 < 0);
-  int b100 = b4 / 25 - (b4 % 25 < 0);
-  int a400 = SHR (a100, 2);
-  int b400 = SHR (b100, 2);
-  int intervening_leap_days = (a4 - b4) - (a100 - b100) + (a400 - b400);
-  int years = ltm.tm_year - gtm.tm_year;
-  int days = (365 * years + intervening_leap_days
-              + (ltm.tm_yday - gtm.tm_yday));
-  return (60 * (60 * (24 * days + (ltm.tm_hour - gtm.tm_hour))
-                + (ltm.tm_min - gtm.tm_min)));
+  {
+    int a4 = SHR (ltm.tm_year, 2) + SHR (TM_YEAR_BASE, 2) - ! (ltm.tm_year & 3);
+    int b4 = SHR (gtm.tm_year, 2) + SHR (TM_YEAR_BASE, 2) - ! (gtm.tm_year & 3);
+    int a100 = a4 / 25 - (a4 % 25 < 0);
+    int b100 = b4 / 25 - (b4 % 25 < 0);
+    int a400 = SHR (a100, 2);
+    int b400 = SHR (b100, 2);
+    int intervening_leap_days = (a4 - b4) - (a100 - b100) + (a400 - b400);
+    int years = ltm.tm_year - gtm.tm_year;
+    int days = (365 * years + intervening_leap_days
+                + (ltm.tm_yday - gtm.tm_yday));
+    return (60 * (60 * (24 * days + (ltm.tm_hour - gtm.tm_hour))
+                  + (ltm.tm_min - gtm.tm_min)));
+  }
 }
 #endif
 
@@ -145,13 +147,11 @@ xs_tzoffset(sec, min, hour, mday, mon, year, wday = -1, yday = -1, isdst = -1)
     int             wday
     int             yday
     int             isdst
-INIT:
+PREINIT:
     int offset;
 CODE:
-{
     offset = tzoffset(min, hour, mday, mon, year);
     RETVAL=newSVpvf("%+03d%02u", offset/60/60, offset/60%60);
-}
 OUTPUT:
     RETVAL
 
