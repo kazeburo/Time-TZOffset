@@ -27,3 +27,4 @@ MYMETA.*
 /Time-TZOffset-*
 lib/Time/TZOffset.c
 !lib/Time/ppport.h
+/eg/
