@@ -2,6 +2,8 @@ Revision history for Perl extension Time-TZOffset
 
 {{$NEXT}}
 
+    - Added offset_as_seconds. (karupanerura)
+
 0.03 2014-05-08T15:09:21Z
 
     - Correct compilation problems with Visual Studio compiler #1

@@ -4,7 +4,7 @@
       "-2014 Piotr Roszatycki <dexter@cpan.org>."
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.14.1, CPAN::Meta::Converter version 2.132830",
+   "generated_by" : "Minilla/v2.3.0, CPAN::Meta::Converter version 2.143240",
    "license" : [
       "perl_5"
    ],
@@ -28,8 +28,6 @@
    "prereqs" : {
       "configure" : {
          "requires" : {
-            "CPAN::Meta" : "0",
-            "CPAN::Meta::Prereqs" : "0",
             "Module::Build" : "0.38"
          }
       },

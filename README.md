@@ -22,6 +22,10 @@ And also Time::TZOffset is more portable than using `POSIX::strftime` with `%z`.
 
     Returns a timezone offset string like `+0900`
 
+- tzoffset\_as\_seconds(@localtime)
+
+    Returns a timezone offset seconds.
+
 # BENCHMARK
 
 I did this benchmark on linux.
@@ -31,7 +35,6 @@ I did this benchmark on linux.
     use Time::Local;
     use Time::TZOffset;
     
-
     cmpthese(timethese(-1, {
         'posix' => sub {
             POSIX::strftime('%z', @lt);
@@ -63,7 +66,7 @@ it under the same terms as Perl itself.
 
 # POSIX::strftime::GNU LICENSE
 
-This modules uses [POSIX::strftime::GNU](http://search.cpan.org/perldoc?POSIX::strftime::GNU)'s code. [POSIX::strftime::GNU](http://search.cpan.org/perldoc?POSIX::strftime::GNU)'s  license term is following:
+This modules uses [POSIX::strftime::GNU](https://metacpan.org/pod/POSIX::strftime::GNU)'s code. [POSIX::strftime::GNU](https://metacpan.org/pod/POSIX::strftime::GNU)'s  license term is following:
 
 Copyright (c) 2012-2014 Piotr Roszatycki <dexter@cpan.org>.
 
