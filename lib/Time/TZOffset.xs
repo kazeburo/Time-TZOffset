@@ -155,5 +155,21 @@ CODE:
 OUTPUT:
     RETVAL
 
+int
+xs_tzoffset_as_seconds(sec, min, hour, mday, mon, year, wday = -1, yday = -1, isdst = -1)
+    double          sec
+    int             min
+    int             hour
+    int             mday
+    int             mon
+    int             year
+    int             wday
+    int             yday
+    int             isdst
+CODE:
+    RETVAL = tzoffset(min, hour, mday, mon, year);
+OUTPUT:
+    RETVAL
+
 
 

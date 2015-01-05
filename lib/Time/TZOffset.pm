@@ -6,7 +6,7 @@ use base qw/Exporter/;
 
 
 our $VERSION = "0.03";
-our @EXPORT_OK = qw/tzoffset/;
+our @EXPORT_OK = qw/tzoffset tzoffset_as_seconds/;
 
 use XSLoader;
 XSLoader::load(__PACKAGE__, $VERSION);
@@ -41,6 +41,10 @@ And also Time::TZOffset is more portable than using C<POSIX::strftime> with C<%z
 =item tzoffset(@localtime)
 
 Returns a timezone offset string like C<+0900>
+
+=item tzoffset_as_seconds(@localtime)
+
+Returns a timezone offset seconds.
 
 =back
 
