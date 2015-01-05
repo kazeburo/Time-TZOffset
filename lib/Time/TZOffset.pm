@@ -5,7 +5,7 @@ use warnings;
 use base qw/Exporter/;
 
 
-our $VERSION = "0.03";
+our $VERSION = "0.04";
 our @EXPORT_OK = qw/tzoffset tzoffset_as_seconds/;
 
 use XSLoader;

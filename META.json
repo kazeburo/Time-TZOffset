@@ -4,7 +4,7 @@
       "-2014 Piotr Roszatycki <dexter@cpan.org>."
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v2.3.0, CPAN::Meta::Converter version 2.143240",
+   "generated_by" : "Minilla/v2.2.1, CPAN::Meta::Converter version 2.141170",
    "license" : [
       "perl_5"
    ],
@@ -63,9 +63,10 @@
          "web" : "https://github.com/kazeburo/Time-TZOffset"
       }
    },
-   "version" : "0.03",
+   "version" : "0.04",
    "x_contributors" : [
       "Jacques Germishuys <jacquesg@striata.com>",
+      "karupanerura <karupa@cpan.org>",
       "Masahiro Nagano <kazeburo@gmail.com>"
    ]
 }
